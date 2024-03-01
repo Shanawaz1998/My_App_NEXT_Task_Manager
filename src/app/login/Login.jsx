@@ -23,10 +23,6 @@ function Login() {
     }
   }, [status, router]);
 
-  if (status === "loading") {
-    return <h1>Loading...</h1>;
-  }
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 

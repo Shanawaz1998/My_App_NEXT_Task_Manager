@@ -14,3 +14,10 @@ export const getTaskByUserId = async (userId) => {
     .then((response) => response.data);
   return result;
 };
+
+export const deleteTask = async (taskId) => {
+  const result = await httpAxios
+    .delete(`/api/tasks/${taskId}`)
+    .then((response) => response.data);
+  return result;
+};

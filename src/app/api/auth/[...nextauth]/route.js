@@ -6,8 +6,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import Cookies from "cookies";
-import { getAllUsers } from "@/services/userServices";
 
 export const authOptions = (req, res) => {
   return {
@@ -25,7 +23,6 @@ export const authOptions = (req, res) => {
         },
         //authorize is used to validate the user credentials entered
         async authorize(credentials, req) {
-          console.log("Inside authorize function");
           await connectdb();
           try {
             const matchedUser = await User.findOne({
@@ -35,10 +32,9 @@ export const authOptions = (req, res) => {
               return null;
             }
             if (matchedUser.provider !== "credentials") {
-              console.log("@@@", matchedUser);
               throw new Error(`Already registered at ${matchedUser.provider}`);
             }
-            console.log("passwords", credentials.password, matchedUser);
+
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
               matchedUser?.password
@@ -76,7 +72,6 @@ export const authOptions = (req, res) => {
     ],
     callbacks: {
       async jwt({ token, user, session, profile, account }) {
-        console.log("jwt called", { token, user, session, profile, account });
         if (user) {
           // passing id and dates to the token to get this in the sessinion
           return {
@@ -86,11 +81,9 @@ export const authOptions = (req, res) => {
             updatedAt: user.updatedAt,
           };
         }
-
-        //******* Updated, remaining - set the session for the github and google login
         if (account?.provider !== "credentials") {
           const existingUser = await User.findOne({ email: token.email });
-          console.log("Existing", existingUser);
+
           return {
             ...token,
             id: existingUser._id,
@@ -101,7 +94,6 @@ export const authOptions = (req, res) => {
         return token;
       },
       async session({ session, token, user, account }) {
-        console.log("Session called", { token, user, session, account });
         return {
           ...session,
           user: {
@@ -114,23 +106,9 @@ export const authOptions = (req, res) => {
         // }
       },
       async signIn({ user, account, profile, email, credentials }) {
-        console.log("Signin called", {
-          user,
-          account,
-          profile,
-          email,
-          credentials,
-        });
         //Bug - If we use the same email id for the user credentials and the github login we need to give the error msg
-        console.log("Inside Sign in function");
+
         if (account.provider === "credentials") {
-          // console.log("Credentials", {
-          //   user,
-          //   account,
-          //   profile,
-          //   email,
-          //   credentials,
-          // });
           return true;
         }
         if (account.provider === "github") {
@@ -138,7 +116,7 @@ export const authOptions = (req, res) => {
 
           try {
             const existingUser = await User.findOne({ email: user.email });
-            console.log("Existing user", existingUser);
+
             if (!existingUser) {
               const newUser = new User({
                 email: user.email,

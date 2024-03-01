@@ -2,16 +2,19 @@
 import { addTask } from "@/services/taskServices";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function AddTask() {
   const session = useSession();
-  console.log("Session from add task", session?.data?.user?.id);
+
   const [task, setTask] = useState({
     title: "",
     shortDesc: "",
     dueDate: new Date(),
     userId: "",
   });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Task", session?.data?.user);
@@ -50,7 +53,21 @@ function AddTask() {
               }}
             />
 
-            <input
+            <div className="flex justify-center mb-3">
+              <DatePicker
+                className="text-center w-full px-24 py-1 text-xl"
+                selected={task.dueDate}
+                onChange={(event) => {
+                  setTask({
+                    ...task,
+                    dueDate: event,
+                  });
+                }}
+                minDate={new Date()}
+              />
+            </div>
+
+            {/* <input
               type="date"
               name="dueDate"
               className="my-3 p-2"
@@ -60,7 +77,7 @@ function AddTask() {
                   dueDate: event.target.value,
                 });
               }}
-            />
+            /> */}
 
             <button
               type="submit"

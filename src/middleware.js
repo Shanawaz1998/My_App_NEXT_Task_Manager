@@ -6,7 +6,8 @@ export async function middleware(request) {
   const authToken = await request.cookies.get("next-auth.session-token")?.value;
   if (
     request.nextUrl.pathname === "/dashboard" ||
-    request.nextUrl.pathname === "/add-task"
+    request.nextUrl.pathname === "/add-task" ||
+    request.nextUrl.pathname === "/show-task"
   ) {
     if (authToken) {
       return; // Allows
@@ -23,5 +24,5 @@ export async function middleware(request) {
 
 // middleware function gets executed for the url whose url matches in the config function
 export const config = {
-  matcher: ["/dashboard", "/register", "/add-task"],
+  matcher: ["/dashboard", "/register", "/add-task", "/show-task"],
 };
