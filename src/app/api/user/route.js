@@ -2,6 +2,7 @@ import { connectdb } from "@/helper/db";
 import { User } from "@/models/users";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import { data } from "autoprefixer";
 
 export const POST = async (request) => {
   await connectdb();
@@ -62,6 +63,31 @@ export const GET = async () => {
     return NextResponse.json(allUsers, {
       status: 201,
     });
+  } catch (error) {
+    console.log("Error From registration", error);
+    return NextResponse.json(error, {
+      message: "Something went wrong!!!",
+    });
+  }
+};
+
+//Updating users - Adding mobile no.
+export const PUT = async (request) => {
+  try {
+    const data = await request.json();
+    console.log("Data", data);
+    const userData = await User.findById(data.id);
+    userData.mobileno = data.mobileno;
+    await userData.save();
+    console.log("User Data", userData);
+    return NextResponse.json(
+      {
+        message: "Mobile no. added",
+      },
+      {
+        status: 201,
+      }
+    );
   } catch (error) {
     console.log("Error From registration", error);
     return NextResponse.json(error, {

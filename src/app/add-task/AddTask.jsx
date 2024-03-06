@@ -1,12 +1,16 @@
 "use client";
+import { sendMsg } from "@/services/msgServices";
 import { addTask } from "@/services/taskServices";
 import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function AddTask() {
   const session = useSession();
+  const router = useRouter();
+  const [enterMobileno, setEnterMobileno] = useState(false);
 
   const [task, setTask] = useState({
     title: "",
@@ -15,11 +19,34 @@ function AddTask() {
     userId: "",
   });
 
+  useEffect(() => {
+    if (!session?.data?.user?.mobileno) {
+      console.log("Not Credentials", session?.data?.user?.provider);
+      setEnterMobileno(true);
+    } else {
+      console.log("Inside Credentials");
+      setEnterMobileno(false);
+    }
+  }, [session]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Task", session?.data?.user);
-    await addTask({ ...task, userId: session?.data?.user?.id });
+    const addedTask = await addTask({
+      ...task,
+      userId: session?.data?.user?.id,
+    });
+    if (addedTask) {
+      let mobileno = session?.data?.user?.mobileno;
+      mobileno = `+91${mobileno}`;
+      await sendMsg({ ...task, mobileno });
+    }
   };
+
+  // if (enterMobileno) {
+  //   return <EnterMobileno />;
+  // }
+
   return (
     <div className="grid grid-cols-12 mt-24">
       <div className="col-span-6 col-start-4 border-2 rounded-lg border-gray-600 p-20">

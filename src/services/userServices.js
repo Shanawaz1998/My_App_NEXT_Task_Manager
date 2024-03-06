@@ -14,6 +14,9 @@ export const getAllUsers = async () => {
   return result;
 };
 
-// export const getUserByEmail = async (email) => {
-//   const result = await httpAxios.get("/api/users" + email);
-// };
+export const addMobileNo = async (userData) => {
+  const result = await httpAxios
+    .put("/api/user", userData)
+    .then((response) => response.data);
+  return result;
+};

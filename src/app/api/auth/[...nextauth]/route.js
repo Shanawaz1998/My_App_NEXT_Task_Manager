@@ -79,6 +79,7 @@ export const authOptions = (req, res) => {
             id: user._id,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
+            mobileno: user.mobileno,
           };
         }
         if (account?.provider !== "credentials") {
@@ -89,6 +90,8 @@ export const authOptions = (req, res) => {
             id: existingUser._id,
             createdAt: existingUser.createdAt,
             updatedAt: existingUser.updatedAt,
+            provider: existingUser.provider,
+            mobileno: existingUser.mobileno,
           };
         }
         return token;
@@ -101,6 +104,8 @@ export const authOptions = (req, res) => {
             id: token.id,
             createdAt: token.createdAt,
             updatedAt: token.updatedAt,
+            provider: token.provider,
+            mobileno: token.mobileno,
           },
         };
         // }

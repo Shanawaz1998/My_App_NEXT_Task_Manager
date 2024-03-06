@@ -8,6 +8,7 @@ function page() {
   const [data, setData] = useState({
     email: "",
     password: "",
+    mobileno: undefined,
   });
   const [error, setError] = useState(false);
 
@@ -64,6 +65,18 @@ function page() {
                 setData({
                   ...data,
                   password: event.target.value,
+                });
+              }}
+            />
+            <input
+              type="number"
+              name="mobileno"
+              placeholder="Enter Mobile no."
+              className="my-3 p-2"
+              onChange={(event) => {
+                setData({
+                  ...data,
+                  mobileno: event.target.value,
                 });
               }}
             />
