@@ -20,7 +20,6 @@ function ShowTask() {
   };
 
   const handleDelete = async (e, taskId) => {
-    console.log("Delete Button clicked", taskId);
     try {
       const taskDelete = await deleteTask(taskId);
       const newTask = tasks.filter((item) => item._id !== taskId);
