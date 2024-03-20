@@ -17,7 +17,17 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <head></head>
+      <head>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="//cdn.jsdelivr.net/npm/datetimepicker@latest/dist/DateTimePicker.min.css"
+        />
+        <script
+          type="text/javascript"
+          src="//cdn.jsdelivr.net/npm/datetimepicker@latest/dist/DateTimePicker.min.js"
+        ></script>
+      </head>
       <body className={inter.className}>
         <AuthProvider session={session}>
           <CustomNavbar />

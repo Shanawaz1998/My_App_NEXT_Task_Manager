@@ -14,8 +14,19 @@ function Tasks({ item, handleDelete }) {
             </button>
 
             <p>{item.shortDesc}</p>
-            <p>{item.createdAt.substring(0, 10)}</p>
-            <p>{item.updatedAt.substring(0, 10)}</p>
+            <p>Date: {item.dueDate.substring(0, 10)}</p>
+            <p>
+              Time:
+              {item.dueTime}
+            </p>
+            <p>
+              Is Task completed:
+              {`${
+                item.isCompleted ? "It is completed" : "It is not completed"
+              }`}
+            </p>
+            <p>Created at: {item.createdAt.substring(0, 10)}</p>
+            <p>Updated at: {item.updatedAt.substring(0, 10)}</p>
           </div>
         </div>
       </div>

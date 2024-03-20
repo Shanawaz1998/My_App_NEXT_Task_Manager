@@ -9,39 +9,51 @@ import "react-datepicker/dist/react-datepicker.css";
 // import { scheduleJob } from "node-schedule";
 import schedule from "node-schedule";
 // const schedule = require("node-schedule");
+import Datetime from "react-datetime";
+import "react-datetime/css/react-datetime.css";
+import moment from "moment";
+import DateTimePicker from "react-datetime-picker";
 
 function AddTask() {
   const { data: session, status } = useSession();
+  const [remindAt, setRemindAt] = useState();
   const [task, setTask] = useState({
     title: "",
     shortDesc: "",
     dueDate: new Date(),
+    dueTime: "",
+    isCompleted: false,
     userId: "",
   });
+  console.log("Task from add task", task);
 
   // useEffect(() => {
-  //   if (!session?.data?.user?.mobileno) {
-  //     console.log("Not Credentials", session?.data?.user?.provider);
-
+  //   if (!session?.user?.mobileno) {
+  //     console.log("Not Credentials", session?.user?.provider);
   //   } else {
   //     console.log("Inside Credentials");
-
   //   }
   // }, [session]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log("Task", session?.data?.user);
-  //   const addedTask = await addTask({
-  //     ...task,
-  //     userId: session?.data?.user?.id,
-  //   });
-  //   if (addedTask) {
-  //     let mobileno = session?.data?.user?.mobileno;
-  //     mobileno = `+91${mobileno}`;
-  //     await sendMsg({ ...task, mobileno });
-  //   }
+  // const substractHours = (date, hours, min) => {
+  //   date.setHours(date.getHours() - hours);
+  //   date.setMinutes(date.getMinutes() - min);
+  //   return date;
   // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // const newDate = substractHours(task.dueDate, 5, 30);
+    const addedTask = await addTask({
+      ...task,
+      userId: session?.user?.id,
+    });
+    // if (addedTask) {
+    //   let mobileno = session?.user?.mobileno;
+    //   mobileno = `+91${mobileno}`;
+    //   await sendMsg({ ...task, mobileno });
+    // }
+  };
 
   // if (enterMobileno) {
   //   return <EnterMobileno />;
@@ -49,7 +61,7 @@ function AddTask() {
 
   // const date = new Date(Date.now() + 500);
   // const job = schedule.scheduleJob(date, () => {
-  console.log("@@@The world is going to end today.");
+  // console.log("@@@The world is going to end today.");
   // });
 
   if (status === "authenticated") {
@@ -59,7 +71,7 @@ function AddTask() {
           <h1 className="flex justify-center text-4xl mb-5 font-bold">
             Add Your Task
           </h1>
-          <form onSubmit={() => handleSubmit()}>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col">
               <input
                 type="text"
@@ -85,33 +97,26 @@ function AddTask() {
                   });
                 }}
               />
-
-              <div className="flex justify-center mb-3">
-                <DatePicker
-                  className="text-center w-full px-24 py-1 text-xl"
-                  selected={task.dueDate}
-                  onChange={(event) => {
-                    setTask({
-                      ...task,
-                      dueDate: event,
-                    });
-                  }}
-                  minDate={new Date()}
-                />
-              </div>
-
-              {/* <input
+              <input
                 type="date"
-                name="dueDate"
-                className="my-3 p-2"
                 onChange={(event) => {
                   setTask({
                     ...task,
                     dueDate: event.target.value,
                   });
                 }}
-              /> */}
-
+              />
+              <input
+                type="time"
+                onChange={(event) => {
+                  const newTime = event.target.value;
+                  console.log("New Time", newTime);
+                  setTask({
+                    ...task,
+                    dueTime: event.target.value,
+                  });
+                }}
+              />
               <button
                 type="submit"
                 className="border-2 border-indigo-100 bg-indigo-200 rounded p-1"

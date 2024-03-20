@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { deleteTask, getTaskByUserId } from "@/services/taskServices";
 import Tasks from "./Tasks";
+import moment from "moment";
+import schedule from "node-schedule";
 
 function ShowTask() {
   const [tasks, setTasks] = useState([]);
@@ -10,13 +12,24 @@ function ShowTask() {
 
   useEffect(() => {
     const userId = session?.data?.user?.id;
-
     session.data && load(userId);
   }, [session.data]);
   const load = async (userId) => {
     const result = await getTaskByUserId(userId);
-    console.log("Result from show task", result);
     setTasks(result);
+    // const dateMatchedTask = tasks.filter((item) => {
+    //   //*******Pending********************************
+    //   const date = new Date(item.dueDate);
+    //   const job = schedule.scheduleJob(date, () => {
+    //     console.log("@@@The world is going to end today.");
+    //   });
+    // });
+    // console.log("Matched Date", dateMatchedTask);
+
+    //Time
+    // tasks.map((item) => {
+    //   console.log("Time", item.dueTime, moment(new Date()).format("hh:mm"));
+    // });
   };
 
   const handleDelete = async (e, taskId) => {

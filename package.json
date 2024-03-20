@@ -9,9 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/x-date-pickers": "^6.19.6",
     "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "cookies": "^0.9.1",
+    "date-fns": "^3.4.0",
+    "datetimepicker": "^0.1.39",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.2",
     "next": "14.0.4",
@@ -19,7 +24,10 @@
     "node-schedule": "^2.1.1",
     "react": "^18",
     "react-datepicker": "^6.2.0",
+    "react-datetime": "^3.2.0",
+    "react-datetime-picker": "^5.6.0",
     "react-dom": "^18",
+    "react-time-picker": "^6.6.0",
     "twilio": "^4.23.0"
   },
   "devDependencies": {
